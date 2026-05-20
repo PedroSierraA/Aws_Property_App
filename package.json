@@ -1,0 +1,13 @@
+{
+  "name": "fincamarket",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "sync": "node sync.js",
+    "setup-contentful": "node setup-contentful-mediaClaude.js"
+  },
+  "dependencies": {
+    "contentful-management": "^12.5.0",
+    "dotenv": "^16.0.0"
+  }
+}

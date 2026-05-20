@@ -1,0 +1,19 @@
+# ── Credenciales — NUNCA a GitHub ─────────────
+config.js
+.env
+
+# ── Dependencias ───────────────────────────────
+node_modules/
+package-lock.json
+
+# ── Documentación interna (no para el repo público) ──
+DESARROLLO_LOCAL.md
+
+# ── Herramientas internas del desarrollador ────
+# sync.js sincroniza a ../S3_full/ con rutas absolutas
+# de este equipo — no tiene utilidad para otros usuarios
+sync.js
+
+# Configuración de Claude Code con rutas absolutas
+# de este equipo — no tiene sentido para otros usuarios
+.claude/

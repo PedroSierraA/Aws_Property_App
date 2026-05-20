@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>FincaMarket | Propiedades de Ensueño en Colombia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Configuración local (credenciales — ver config.example.js) -->
+    <script src="config.js"></script>
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9X20HV93GR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', (window.FM_CONFIG && window.FM_CONFIG.GA4_ID) || 'G-XXXXXXXXXX');
+    </script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<!-- ═══════════════════════════════════════
+     ANNOUNCEMENT BANNER
+════════════════════════════════════════ -->
+<div class="announcement-bar">
+    <span>Nueva temporada — Propiedades exclusivas en el Eje Cafetero disponibles ahora</span>
+</div>
+
+<!-- ═══════════════════════════════════════
+     HEADER
+════════════════════════════════════════ -->
+<header class="site-header" id="siteHeader">
+    <div class="header-inner">
+
+        <nav class="nav-left">
+            <a href="#propiedades" class="nav-link">Propiedades</a>
+            <a href="#experiencias" class="nav-link">Experiencias</a>
+            <a href="#regiones" class="nav-link">Regiones</a>
+        </nav>
+
+        <div class="logo-center">
+            <a href="/" class="logo">
+                <span class="logo-icon">◆</span>
+                <span class="logo-text">FincaMarket</span>
+            </a>
+        </div>
+
+        <div class="nav-right">
+            <a href="#" class="nav-link">Publicar</a>
+
+            <div class="user-menu" id="userMenu">
+                <button class="user-btn" id="userBtn">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </button>
+
+                <div class="user-dropdown" id="userDropdown">
+                    <div class="dropdown-user-info">
+                        <div class="dropdown-avatar" id="dropdownAvatar">U</div>
+                        <div>
+                            <p class="dropdown-name" id="dropdownName">Usuario</p>
+                            <p class="dropdown-email" id="dropdownEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5520262034273c3a153038343c397b363a38">[email&#160;protected]</a></p>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" onclick="abrirModalFavoritos(); return false;">Mis favoritos</a>
+                    <a href="#" class="dropdown-item" onclick="abrirModalReservas(); return false;">Mis reservas</a>
+                    <a href="#" class="dropdown-item">Perfil</a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item dropdown-logout" onclick="logout()">Cerrar sesión</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<!-- ═══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="hero">
+    <div class="hero-bg">
+        <div class="hero-overlay"></div>
+        <img src="" id="heroImg" alt="Finca colombiana" class="hero-img">
+    </div>
+
+    <div class="hero-content">
+        <div class="hero-label">Colombia · Desde 2026</div>
+        <h1 class="hero-title">
+            Encuentra la finca<br>
+            <em>que mereces.</em>
+        </h1>
+        <p class="hero-subtitle">Arriendos y ventas de fincas, casas campestres<br>y retiros privados en toda Colombia.</p>
+
+        <!-- Search Panel -->
+        <div class="search-panel">
+            <div class="search-tabs">
+                <button class="search-tab active" data-tab="arriendo">Arriendo</button>
+                <button class="search-tab" data-tab="venta">Venta</button>
+            </div>
+
+            <div class="search-fields">
+                <div class="search-field">
+                    <label>¿Dónde?</label>
+                    <input type="text" placeholder="Antioquia, Eje Cafetero…" id="locationInput" list="locationSuggestions" autocomplete="off">
+                    <datalist id="locationSuggestions">
+                        <option value="Antioquia"></option>
+                        <option value="Guatapé, Antioquia"></option>
+                        <option value="Santa Fe de Antioquia"></option>
+                        <option value="Eje Cafetero"></option>
+                        <option value="Montenegro, Quindío"></option>
+                        <option value="Salento, Quindío"></option>
+                        <option value="Cundinamarca"></option>
+                        <option value="La Calera, Cundinamarca"></option>
+                        <option value="Santander"></option>
+                        <option value="San Gil, Santander"></option>
+                        <option value="Villa de Leyva, Boyacá"></option>
+                        <option value="Valle del Cauca"></option>
+                        <option value="Buga, Valle del Cauca"></option>
+                    </datalist>
+                </div>
+                <div class="search-divider"></div>
+                <div class="search-field">
+                    <label>¿Cuándo?</label>
+                    <input type="date" id="dateInput" min="">
+                </div>
+                <div class="search-divider"></div>
+                <div class="search-field">
+                    <label>Huéspedes</label>
+                    <input type="number" placeholder="2 personas" min="1" id="guestsInput">
+                </div>
+                <button class="search-btn" onclick="handleSearch()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-scroll-hint">
+        <span>Explorar</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     STATS BAR
+════════════════════════════════════════ -->
+<section class="stats-bar">
+    <div class="stat">
+        <strong>+340</strong>
+        <span>Propiedades</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+        <strong>18</strong>
+        <span>Departamentos</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+        <strong>4.9 ★</strong>
+        <span>Valoración media</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+        <strong>100%</strong>
+        <span>Propietarios verificados</span>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FILTERS
+════════════════════════════════════════ -->
+<section class="filters-section" id="propiedades">
+    <div class="container">
+        <div class="filters-header">
+            <h2 class="section-title">Propiedades disponibles</h2>
+            <div class="filter-chips">
+                <button class="chip active" data-filter="all">Todas</button>
+                <button class="chip" data-filter="finca">Fincas</button>
+                <button class="chip" data-filter="casa">Casas campestres</button>
+                <button class="chip" data-filter="retiro">Retiros privados</button>
+                <button class="chip" data-filter="hacienda">Haciendas</button>
+            </div>
+        </div>
+
+        <!-- Advanced Filters -->
+        <div class="advanced-filters" id="advancedFilters">
+            <button class="filter-toggle" id="filterToggle" onclick="toggleFilters()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
+                </svg>
+                Filtros avanzados
+                <span class="filter-count" id="filterCount" style="display:none">0</span>
+            </button>
+
+            <div class="filter-panel" id="filterPanel">
+                <div class="filter-grid">
+
+                    <div class="filter-group">
+                        <label class="filter-label">Precio por noche</label>
+                        <div class="price-range">
+                            <div class="price-input-wrap">
+                                <span>COP</span>
+                                <input type="number" id="priceMin" placeholder="Mínimo" step="50000">
+                            </div>
+                            <span class="price-sep">—</span>
+                            <div class="price-input-wrap">
+                                <span>COP</span>
+                                <input type="number" id="priceMax" placeholder="Máximo" step="50000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Habitaciones</label>
+                        <div class="counter-row">
+                            <button class="counter-btn" onclick="changeCount('rooms', -1)">−</button>
+                            <span id="roomsCount">Cualquiera</span>
+                            <button class="counter-btn" onclick="changeCount('rooms', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Baños</label>
+                        <div class="counter-row">
+                            <button class="counter-btn" onclick="changeCount('baths', -1)">−</button>
+                            <span id="bathsCount">Cualquiera</span>
+                            <button class="counter-btn" onclick="changeCount('baths', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Área mínima</label>
+                        <div class="area-select-wrap">
+                            <select id="areaMin" class="filter-select">
+                                <option value="">Sin mínimo</option>
+                                <option value="500">500 m²</option>
+                                <option value="1000">1.000 m²</option>
+                                <option value="5000">5.000 m²</option>
+                                <option value="10000">10.000 m²</option>
+                                <option value="50000">50.000 m²</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Comodidades</label>
+                        <div class="amenity-checks">
+                            <label class="check-label"><input type="checkbox" value="piscina"> Piscina</label>
+                            <label class="check-label"><input type="checkbox" value="jacuzzi"> Jacuzzi</label>
+                            <label class="check-label"><input type="checkbox" value="bbq"> Zona BBQ</label>
+                            <label class="check-label"><input type="checkbox" value="wifi"> WiFi</label>
+                            <label class="check-label"><input type="checkbox" value="caballos"> Caballos</label>
+                            <label class="check-label"><input type="checkbox" value="rio"> Río/quebrada</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">Región</label>
+                        <select class="filter-select" id="regionFilter">
+                            <option value="">Todas las regiones</option>
+                            <option value="antioquia">Antioquia</option>
+                            <option value="eje-cafetero">Eje Cafetero</option>
+                            <option value="cundinamarca">Cundinamarca</option>
+                            <option value="santander">Santander</option>
+                            <option value="tolima">Tolima</option>
+                            <option value="valle">Valle del Cauca</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="filter-actions">
+                    <button class="btn-clear-filters" onclick="clearFilters()">Limpiar filtros</button>
+                    <button class="btn-apply-filters" onclick="applyFilters()">Aplicar filtros</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     PROPERTIES GRID
+════════════════════════════════════════ -->
+<section class="properties-section">
+    <div class="container">
+        <!-- TODO (BD): En producción, las cards se cargarán dinámicamente desde API.
+             Usar: fetch('/api/properties?tab='+activeTab+'&page='+page)
+             Cada card requiere: data-type, data-track para filtros y analytics -->
+        <div class="properties-grid" id="propertiesGrid">
+            <!-- contenido cargado desde Contentful -->
+        </div>
+
+        <div class="load-more-wrap">
+            <button class="btn-load-more" onclick="loadMore()">
+                Ver más propiedades
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     EXPERIENCES / REGIONS SECTION
+════════════════════════════════════════ -->
+<section class="regions-section" id="regiones">
+    <div class="container">
+        <div class="section-header">
+            <p class="section-eyebrow">Descubre Colombia</p>
+            <h2 class="section-title">Explora por región</h2>
+        </div>
+
+        <div class="regions-grid">
+            <div class="region-card region-card--large" data-track="region-antioquia">
+                <img src="" alt="Antioquia">
+                <div class="region-info">
+                    <h3>Antioquia</h3>
+                    <p>127 propiedades</p>
+                </div>
+            </div>
+            <div class="region-card" data-track="region-cafetero">
+                <img src="" alt="Eje Cafetero">
+                <div class="region-info">
+                    <h3>Eje Cafetero</h3>
+                    <p>89 propiedades</p>
+                </div>
+            </div>
+            <div class="region-card" data-track="region-santander">
+                <img src="" alt="Santander">
+                <div class="region-info">
+                    <h3>Santander</h3>
+                    <p>54 propiedades</p>
+                </div>
+            </div>
+            <div class="region-card" data-track="region-cundinamarca">
+                <img src="" alt="Cundinamarca">
+                <div class="region-info">
+                    <h3>Cundinamarca</h3>
+                    <p>73 propiedades</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     EXPERIENCES STRIP
+════════════════════════════════════════ -->
+<section class="experiences-section" id="experiencias">
+    <div class="container">
+        <div class="section-header">
+            <p class="section-eyebrow">Más que un alojamiento</p>
+            <h2 class="section-title">Experiencias únicas</h2>
+        </div>
+
+        <div class="exp-strip">
+            <div class="exp-card" data-track="exp-aventura">
+                <div class="exp-icon">🌄</div>
+                <h4>Aventura y naturaleza</h4>
+                <p>Senderismo, rapel y ecoturismo en entornos naturales privilegiados.</p>
+            </div>
+            <div class="exp-card" data-track="exp-gastronomia">
+                <div class="exp-icon">🍽</div>
+                <h4>Gastronomía regional</h4>
+                <p>Cocina campesina auténtica con ingredientes cultivados en la finca.</p>
+            </div>
+            <div class="exp-card" data-track="exp-bienestar">
+                <div class="exp-icon">🧘</div>
+                <h4>Bienestar y retiro</h4>
+                <p>Yoga, meditación y spa en entornos de paz absoluta.</p>
+            </div>
+            <div class="exp-card" data-track="exp-eventos">
+                <div class="exp-icon">🎊</div>
+                <h4>Eventos privados</h4>
+                <p>Matrimonios, quinceañeras y celebraciones empresariales exclusivas.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CTA BANNER
+════════════════════════════════════════ -->
+<section class="cta-banner">
+    <div class="cta-content">
+        <p class="section-eyebrow" style="color: var(--gold)">Para propietarios</p>
+        <h2>¿Tienes una finca para arrendar o vender?</h2>
+        <p>Únete a más de 340 propietarios verificados y llega a miles de visitantes cada mes.</p>
+        <button class="btn-cta-primary" data-track="cta-publicar">Publicar mi propiedad</button>
+    </div>
+    <div class="cta-visual">
+        <img src="" id="ctaImg" alt="Propietario FincaMarket">
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="site-footer">
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <span class="logo-icon">◆</span> FincaMarket
+            </div>
+            <p class="footer-tagline">Conectamos a Colombia con sus rincones más hermosos desde 2026.</p>
+            <div class="footer-social">
+                <a href="#" class="social-link" aria-label="Instagram" data-track="social-instagram">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                    </svg>
+                </a>
+                <a href="#" class="social-link" aria-label="Facebook" data-track="social-facebook">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                    </svg>
+                </a>
+                <a href="#" class="social-link" aria-label="WhatsApp" data-track="social-whatsapp">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                    </svg>
+                </a>
+                <a href="#" class="social-link" aria-label="YouTube" data-track="social-youtube">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-links-group">
+            <h5>Propiedades</h5>
+            <a href="#">Fincas en arriendo</a>
+            <a href="#">Casas campestres</a>
+            <a href="#">Haciendas</a>
+            <a href="#">Retiros privados</a>
+            <a href="#">Propiedades en venta</a>
+        </div>
+
+        <div class="footer-links-group">
+            <h5>Destinos</h5>
+            <a href="#">Antioquia</a>
+            <a href="#">Eje Cafetero</a>
+            <a href="#">Santander</a>
+            <a href="#">Cundinamarca</a>
+            <a href="#">Valle del Cauca</a>
+        </div>
+
+        <div class="footer-links-group">
+            <h5>FincaMarket</h5>
+            <a href="#">Sobre nosotros</a>
+            <a href="#">Cómo funciona</a>
+            <a href="#">Para propietarios</a>
+            <a href="#">Blog de viajes</a>
+            <a href="#">Contacto</a>
+        </div>
+
+        <div class="footer-links-group">
+            <h5>Legal y soporte</h5>
+            <a href="#">Política de privacidad</a>
+            <a href="#">Términos de uso</a>
+            <a href="#">Política de cancelación</a>
+            <a href="#">Centro de ayuda</a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <span>© 2026 FincaMarket S.A.S. · Todos los derechos reservados</span>
+        &lt;<a href="#" style="color: var(--text-muted); transition: color 0.2s;">Política de cookies</a>
+    </div>
+
+</footer>
+
+<!-- TOAST NOTIFICATION -->
+<div id="toastNotification" class="toast-notification"></div>
+
+<!-- MODAL PROPIEDAD -->
+<div class="modal-overlay modal-overlay--propiedad" id="modalPropiedad">
+    <div class="modal-propiedad-box">
+        <button class="modal-propiedad-close" onclick="cerrarModalPropiedad()">✕</button>
+        <div class="modal-propiedad-grid">
+
+            <!-- Columna izquierda: imagen -->
+            <div class="mp-imagen-wrap">
+                <img id="mpImg" alt="" class="mp-imagen">
+            </div>
+
+            <!-- Columna derecha: info + formulario -->
+            <div class="mp-info">
+                <p class="mp-location" id="mpLocation"></p>
+                <h2 class="mp-name" id="mpName"></h2>
+                <p class="mp-rating" id="mpRating"></p>
+                <p class="mp-desc" id="mpDesc"></p>
+
+                <div class="mp-amenidades" id="mpAmenidades"></div>
+
+                <div class="mp-precio" id="mpPrice"></div>
+
+                <div class="mp-form">
+                    <p class="mp-form-title">Realizar reserva</p>
+                    <div class="mp-form-grid">
+                        <div class="mp-field">
+                            <label>Fecha entrada</label>
+                            <input type="date" id="mpFechaEntrada">
+                        </div>
+                        <div class="mp-field">
+                            <label>Fecha salida</label>
+                            <input type="date" id="mpFechaSalida">
+                        </div>
+                    </div>
+                    <div class="mp-field">
+                        <label>Huéspedes</label>
+                        <input type="number" id="mpHuespedes" placeholder="Número de personas" min="1" max="50">
+                    </div>
+                    <button class="mp-btn-reservar" id="btnReservar" onclick="crearReserva()">Reservar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- MODAL RESERVAS -->
+<div class="modal-overlay" id="modalReservas">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>🗓️ Mis Reservas</h3>
+            <button class="modal-close" onclick="cerrarModalReservas()">✕</button>
+        </div>
+        <div class="modal-body" id="listaReservas"></div>
+    </div>
+</div>
+
+<!-- MODAL FAVORITOS -->
+<div class="modal-overlay" id="modalFavoritos">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>❤️ Mis Favoritos</h3>
+            <button class="modal-close" onclick="cerrarModalFavoritos()">✕</button>
+        </div>
+        <div class="modal-body" id="listaFavoritos">
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript externo -->
+<script src="script.js"></script>
+<script src="contentful-loader.js"></script>
+
+</body>
+</html>
