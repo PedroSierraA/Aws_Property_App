@@ -4,13 +4,14 @@
 //  filtros, UI interacciones
 // ═══════════════════════════════════════════
 
-/* ─── CONFIG (leída de config.js — ver config.example.js) ────── */
-const _C             = window.FM_CONFIG || {};
-const API_BASE       = _C.API_BASE       || "";
-const COGNITO_DOMAIN = _C.COGNITO_DOMAIN || "";
-const CLIENT_ID      = _C.CLIENT_ID      || "";
-const CLIENT_SECRET  = _C.CLIENT_SECRET  || "";
-const REDIRECT_URI   = _C.REDIRECT_URI   || "";
+/* ─── API CONFIG ─────────────────────────── */
+const API_BASE = "https://fg5vp93vp8.execute-api.us-east-2.amazonaws.com";
+
+/* ─── COGNITO CONFIG ─────────────────────── */
+const COGNITO_DOMAIN = "https://us-east-2mzugshofw.auth.us-east-2.amazoncognito.com";
+const CLIENT_ID      = "2lbl587e02n721vnvtut0fmnq8";
+const CLIENT_SECRET  = "12srkn4u0ss0o7td32mulpfsoouc7dtpk0pumepvqkjqs7eoka0v";
+const REDIRECT_URI   = "https://d3cptxew4r31et.cloudfront.net";
 
 /* ─── PKCE UTILS ─────────────────────────── */
 function generateRandomString(length) {
@@ -737,115 +738,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     console.log("✓ FincaMarket inicializado correctamente");
 });
-
-/* ─── AGENTE CONVERSACIONAL ──────────────────── */
-let _agenteHistorial = [];
-let _agenteCargando  = false;
-
-function toggleAgente() {
-    const panel = document.getElementById("agentePanel");
-    const btn   = document.getElementById("agenteBtn");
-    panel.classList.toggle("open");
-    btn.classList.toggle("open");
-    if (panel.classList.contains("open")) {
-        document.getElementById("agenteInput").focus();
-    }
-}
-
-function getPropsParaAgente() {
-    const props = [];
-    document.querySelectorAll(".prop-card:not(.prop-card--skeleton)").forEach(card => {
-        const d = card.dataset;
-        if (!d.track) return;
-        const prop = {
-            trackId:     d.track,
-            name:        d.name        || "",
-            location:    d.location    || "",
-            type:        d.type        || "",
-            listingType: d.listingType || "",
-            rating:      parseFloat(d.rating) || 0,
-            amenities:   JSON.parse(d.amenities || "[]"),
-        };
-        if (d.priceNight && d.priceNight !== "") prop.priceNight = parseFloat(d.priceNight);
-        if (d.priceSale  && d.priceSale  !== "") prop.priceSale  = parseFloat(d.priceSale);
-        props.push(prop);
-    });
-    return props;
-}
-
-function agregarMensaje(texto, tipo) {
-    const container = document.getElementById("agenteMensajes");
-    const div       = document.createElement("div");
-    div.className   = "agente-mensaje agente-mensaje--" + tipo;
-    div.innerHTML   = "<p>" + texto.replace(/\n/g, "<br>") + "</p>";
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
-}
-
-function agregarTyping() {
-    const container = document.getElementById("agenteMensajes");
-    const div       = document.createElement("div");
-    div.className   = "agente-mensaje agente-mensaje--bot agente-typing";
-    div.id          = "agenteTyping";
-    div.innerHTML   = "<span></span><span></span><span></span>";
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
-}
-
-function quitarTyping() {
-    const t = document.getElementById("agenteTyping");
-    if (t) t.remove();
-}
-
-async function enviarMensajeAgente() {
-    if (_agenteCargando) return;
-    const input   = document.getElementById("agenteInput");
-    const mensaje = input.value.trim();
-    if (!mensaje) return;
-
-    const email = getUserEmail();
-    if (!email) {
-        agregarMensaje("Por favor inicia sesión para usar el asistente.", "bot");
-        return;
-    }
-
-    input.value     = "";
-    _agenteCargando = true;
-
-    agregarMensaje(mensaje, "user");
-    agregarTyping();
-
-    try {
-        const res = await fetch(API_BASE + "/agente", {
-            method:  "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                mensaje,
-                email,
-                historial:   _agenteHistorial,
-                propiedades: getPropsParaAgente()
-            })
-        });
-
-        const data = await res.json();
-        quitarTyping();
-
-        if (data.respuesta) {
-            agregarMensaje(data.respuesta, "bot");
-            _agenteHistorial = (data.historial || []).map(msg => ({
-                role:    msg.role,
-                content: typeof msg.content === "string"
-                    ? msg.content
-                    : msg.content.filter(b => b.type === "text").map(b => b.text).join("")
-            })).filter(msg => msg.content);
-        } else {
-            agregarMensaje("Lo siento, ocurrió un error. Intenta de nuevo.", "bot");
-        }
-    } catch(e) {
-        quitarTyping();
-        agregarMensaje("Error de conexión. Intenta de nuevo.", "bot");
-        console.error("Error agente:", e);
-    } finally {
-        _agenteCargando = false;
-    }
-}
