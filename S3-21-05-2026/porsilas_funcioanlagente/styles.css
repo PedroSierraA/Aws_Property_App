@@ -655,8 +655,7 @@ input, select { font-family: var(--font-body); }
 }
 
 .prop-fav:hover { background: rgba(10,10,11,0.9); color: #e74c3c; transform: scale(1.18); border-color: rgba(231,76,60,0.4); }
-.prop-fav.saved { color: #e74c3c; border-color: rgba(231,76,60,0.4); }
-.prop-fav.saved svg path { fill: #e74c3c; }
+.prop-fav.saved { color: #e74c3c; fill: #e74c3c; }
 
 .prop-card-overlay {
     position: absolute; bottom: 0; left: 0; right: 0;

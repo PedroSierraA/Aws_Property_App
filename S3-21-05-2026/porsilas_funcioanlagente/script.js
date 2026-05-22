@@ -603,7 +603,6 @@ async function initFavoriteButtons() {
             if (esFavorito) {
                 await deleteFavorito(email, propId);
                 btn.classList.remove("saved");
-                mostrarToast("🗑️ Eliminado de favoritos");
                 trackEvent("favorito_eliminado", {
                     property_id:   propId,
                     property_name: propNombre,
@@ -611,7 +610,6 @@ async function initFavoriteButtons() {
             } else {
                 await saveFavorito(email, propId, propNombre);
                 btn.classList.add("saved");
-                mostrarToast("❤️ Guardado en favoritos");
                 trackEvent("favorito_guardado", {
                     property_id:   propId,
                     property_name: propNombre,
